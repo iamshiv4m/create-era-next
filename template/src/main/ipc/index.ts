@@ -8,7 +8,9 @@ import { updaterHandlers } from './updater.js'
  * Strongly-typed IPC handler definition.
  * The compiler enforces that the returned value matches the contract for each channel.
  */
-type Handler<K extends IpcChannel> = (req: IpcRequest<K>) => IpcResponse<K> | Promise<IpcResponse<K>>
+type Handler<K extends IpcChannel> = (
+  req: IpcRequest<K>,
+) => IpcResponse<K> | Promise<IpcResponse<K>>
 
 type HandlerMap = { [K in IpcChannel]?: Handler<K> }
 
@@ -38,7 +40,10 @@ export function registerIpcHandlers(): void {
     ...updaterHandlers,
   }
 
-  for (const [channel, handler] of Object.entries(handlers) as [IpcChannel, Handler<IpcChannel>][]) {
+  for (const [channel, handler] of Object.entries(handlers) as [
+    IpcChannel,
+    Handler<IpcChannel>,
+  ][]) {
     if (handler) register(channel, handler)
   }
 

@@ -13,19 +13,19 @@ npm run dev
 
 ## Scripts
 
-| Script                | What it does                                                    |
-| --------------------- | --------------------------------------------------------------- |
-| `npm run dev`         | Start Vite dev server + Electron with HMR                       |
-| `npm run build`       | Bundle main / preload / renderer to `out/`                      |
-| `npm run typecheck`   | TypeScript check (no emit)                                      |
-| `npm run lint`        | ESLint over the whole project                                   |
-| `npm test`            | Vitest unit tests                                               |
-| `npm run test:e2e`    | Playwright smoke test against the built app                     |
-| `npm run package`     | Package the app for the current OS (no publish)                 |
-| `npm run package:mac` | Package for macOS                                               |
-| `npm run package:win` | Package for Windows                                             |
-| `npm run package:linux` | Package for Linux                                             |
-| `npm run release`     | Build + publish installers to GitHub Releases (CI uses this)    |
+| Script                  | What it does                                                 |
+| ----------------------- | ------------------------------------------------------------ |
+| `npm run dev`           | Start Vite dev server + Electron with HMR                    |
+| `npm run build`         | Bundle main / preload / renderer to `out/`                   |
+| `npm run typecheck`     | TypeScript check (no emit)                                   |
+| `npm run lint`          | ESLint over the whole project                                |
+| `npm test`              | Vitest unit tests                                            |
+| `npm run test:e2e`      | Playwright smoke test against the built app                  |
+| `npm run package`       | Package the app for the current OS (no publish)              |
+| `npm run package:mac`   | Package for macOS                                            |
+| `npm run package:win`   | Package for Windows                                          |
+| `npm run package:linux` | Package for Linux                                            |
+| `npm run release`       | Build + publish installers to GitHub Releases (CI uses this) |
 
 ## Project structure
 

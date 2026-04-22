@@ -13,7 +13,9 @@ export function Sidebar() {
   return (
     <aside className="flex h-full w-56 flex-col border-r border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="drag-region mb-6 px-2 pt-2">
-        <h1 className="text-lg font-semibold">{t('app.title', { projectName: '{{projectName}}' })}</h1>
+        <h1 className="text-lg font-semibold">
+          {t('app.title', { projectName: '{{projectName}}' })}
+        </h1>
         <p className="text-xs text-neutral-500">{t('app.tagline')}</p>
       </div>
       <nav className="no-drag flex flex-col gap-1">

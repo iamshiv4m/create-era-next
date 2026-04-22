@@ -29,7 +29,11 @@ log.info(`[sqlite] opened db at ${dbPath}`)
  * make prototyping and developer DX pleasant.
  */
 const allowedPrefix = /^\s*(SELECT|INSERT|UPDATE|DELETE|WITH)\b/i
-const sqlSchema = z.string().min(1).max(5000).regex(allowedPrefix, 'Only SELECT/INSERT/UPDATE/DELETE/WITH allowed')
+const sqlSchema = z
+  .string()
+  .min(1)
+  .max(5000)
+  .regex(allowedPrefix, 'Only SELECT/INSERT/UPDATE/DELETE/WITH allowed')
 const paramsSchema = z.array(z.unknown()).optional()
 
 function validate(sql: string, params?: unknown[]): void {
@@ -46,7 +50,9 @@ db.exec(`
 `)
 
 const kvGet = db.prepare<[string], { value: string }>('SELECT value FROM kv WHERE key = ?')
-const kvSet = db.prepare<[string, string]>('INSERT INTO kv(key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value')
+const kvSet = db.prepare<[string, string]>(
+  'INSERT INTO kv(key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value',
+)
 const kvDel = db.prepare<[string]>('DELETE FROM kv WHERE key = ?')
 const kvClear = db.prepare('DELETE FROM kv')
 

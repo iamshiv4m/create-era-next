@@ -4,21 +4,21 @@ If you're moving an existing ERB app, here's the mental-model mapping.
 
 ## Build system
 
-| ERB                                  | create-era-next                          |
-| ------------------------------------ | ---------------------------------------- |
-| Webpack 5 + tons of configs          | `electron-vite` — single `electron.vite.config.ts` |
-| `erb.webpack.config.*.ts` files      | Three sub-configs in one file (main/preload/renderer) |
-| `webpack-dev-server`                 | Vite dev server (HMR < 100ms)            |
+| ERB                             | create-era-next                                       |
+| ------------------------------- | ----------------------------------------------------- |
+| Webpack 5 + tons of configs     | `electron-vite` — single `electron.vite.config.ts`    |
+| `erb.webpack.config.*.ts` files | Three sub-configs in one file (main/preload/renderer) |
+| `webpack-dev-server`            | Vite dev server (HMR < 100ms)                         |
 
 **Action**: Move your renderer source under `src/renderer/src/` and delete every
 `webpack.*` file. `electron-vite` handles the rest.
 
 ## Project structure
 
-| ERB                                  | create-era-next                          |
-| ------------------------------------ | ---------------------------------------- |
+| ERB                                                               | create-era-next                                                 |
+| ----------------------------------------------------------------- | --------------------------------------------------------------- |
 | Monorepo with `src/main` + `src/renderer` + nested `package.json` | Single `package.json`, same `src/main` / `src/renderer` folders |
-| `npm run start` (complex dev runner) | `npm run dev`                            |
+| `npm run start` (complex dev runner)                              | `npm run dev`                                                   |
 
 electron-builder already filters production deps correctly, so the double
 `package.json` setup from ERB is no longer needed.
@@ -56,22 +56,22 @@ ERB has a partial `electron-updater` setup. This boilerplate adds:
 
 ## Lint / test / format
 
-| ERB                                  | create-era-next                          |
-| ------------------------------------ | ---------------------------------------- |
-| ESLint (`.eslintrc.*`, legacy)       | ESLint 9 flat config (`eslint.config.js`) |
-| Jest                                 | Vitest (Vite-native, 10x faster)         |
-| — (no e2e default)                   | Playwright smoke test                    |
-| Prettier                             | Prettier (same)                          |
-| Husky                                | Husky 9 (same)                           |
+| ERB                            | create-era-next                           |
+| ------------------------------ | ----------------------------------------- |
+| ESLint (`.eslintrc.*`, legacy) | ESLint 9 flat config (`eslint.config.js`) |
+| Jest                           | Vitest (Vite-native, 10x faster)          |
+| — (no e2e default)             | Playwright smoke test                     |
+| Prettier                       | Prettier (same)                           |
+| Husky                          | Husky 9 (same)                            |
 
 ## Renderer libs
 
-| ERB                                  | create-era-next                          |
-| ------------------------------------ | ---------------------------------------- |
-| Plain CSS / your choice              | Tailwind CSS 4 (via `@tailwindcss/vite`) |
-| React Router (manual)                | React Router v7                          |
-| — (DIY)                              | i18next + `react-i18next`                |
-| — (DIY)                              | Axios + TanStack Query v5 + Devtools     |
+| ERB                     | create-era-next                          |
+| ----------------------- | ---------------------------------------- |
+| Plain CSS / your choice | Tailwind CSS 4 (via `@tailwindcss/vite`) |
+| React Router (manual)   | React Router v7                          |
+| — (DIY)                 | i18next + `react-i18next`                |
+| — (DIY)                 | Axios + TanStack Query v5 + Devtools     |
 
 ## Likely gotchas
 

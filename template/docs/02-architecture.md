@@ -29,11 +29,11 @@ flowchart LR
 
 ## Processes
 
-| Process      | Runtime           | What lives here                                 | Can it `require('fs')`?  |
-| ------------ | ----------------- | ----------------------------------------------- | ------------------------ |
-| **main**     | Node.js (Electron bundle) | App lifecycle, windows, IPC handlers, storage, auto-updater | Yes                      |
-| **preload**  | Sandboxed Node    | `contextBridge` exposing the typed `window.api` | Yes (Node built-ins only) |
-| **renderer** | Chromium          | React, Vite, all UI code                        | No — goes through IPC    |
+| Process      | Runtime                   | What lives here                                             | Can it `require('fs')`?   |
+| ------------ | ------------------------- | ----------------------------------------------------------- | ------------------------- |
+| **main**     | Node.js (Electron bundle) | App lifecycle, windows, IPC handlers, storage, auto-updater | Yes                       |
+| **preload**  | Sandboxed Node            | `contextBridge` exposing the typed `window.api`             | Yes (Node built-ins only) |
+| **renderer** | Chromium                  | React, Vite, all UI code                                    | No — goes through IPC     |
 
 Security defaults:
 

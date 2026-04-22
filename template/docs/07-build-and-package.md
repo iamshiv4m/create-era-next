@@ -35,13 +35,13 @@ npx electron-icon-builder --input=./build/icon.png --output=./build
 
 Set these env vars before `npm run release`:
 
-| Var                                  | Value                                   |
-| ------------------------------------ | --------------------------------------- |
-| `APPLE_ID`                           | Your Apple developer account email      |
-| `APPLE_APP_SPECIFIC_PASSWORD`        | App-specific password from appleid.apple.com |
-| `APPLE_TEAM_ID`                      | 10-char team id from developer.apple.com |
-| `CSC_LINK`                           | Path or base64 of your `.p12` certificate |
-| `CSC_KEY_PASSWORD`                   | Password for the `.p12`                 |
+| Var                           | Value                                        |
+| ----------------------------- | -------------------------------------------- |
+| `APPLE_ID`                    | Your Apple developer account email           |
+| `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password from appleid.apple.com |
+| `APPLE_TEAM_ID`               | 10-char team id from developer.apple.com     |
+| `CSC_LINK`                    | Path or base64 of your `.p12` certificate    |
+| `CSC_KEY_PASSWORD`            | Password for the `.p12`                      |
 
 electron-builder will automatically sign + notarize when all five are set.
 
@@ -50,10 +50,10 @@ GitHub Secrets of the same names.
 
 ## Windows code signing
 
-| Var                       | Value                                   |
-| ------------------------- | --------------------------------------- |
-| `WIN_CSC_LINK`            | Path or base64 of your `.pfx`           |
-| `WIN_CSC_KEY_PASSWORD`    | Password for the `.pfx`                 |
+| Var                    | Value                         |
+| ---------------------- | ----------------------------- |
+| `WIN_CSC_LINK`         | Path or base64 of your `.pfx` |
+| `WIN_CSC_KEY_PASSWORD` | Password for the `.pfx`       |
 
 ## Linux
 

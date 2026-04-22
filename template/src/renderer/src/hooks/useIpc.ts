@@ -1,4 +1,10 @@
-import { useQuery, useMutation, useQueryClient, type UseMutationOptions, type UseQueryOptions } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+  type UseQueryOptions,
+} from '@tanstack/react-query'
 import type { IpcChannel, IpcRequest, IpcResponse } from '../../../shared/ipc-contract'
 
 /**
@@ -44,6 +50,9 @@ export function useIpcMutation<K extends IpcChannel>(
  * Imperative invoker — handy inside event handlers or one-off effects where
  * you don't want a cached query.
  */
-export function ipcInvoke<K extends IpcChannel>(channel: K, req: IpcRequest<K>): Promise<IpcResponse<K>> {
+export function ipcInvoke<K extends IpcChannel>(
+  channel: K,
+  req: IpcRequest<K>,
+): Promise<IpcResponse<K>> {
   return window.api.invoke(channel, req)
 }

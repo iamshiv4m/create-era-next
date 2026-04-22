@@ -91,7 +91,8 @@ export function SettingsPage() {
           </div>
 
           <p className="mt-3 text-xs text-neutral-500">
-            Current stored value: <span className="font-mono">{JSON.stringify(stored.data ?? null)}</span>
+            Current stored value:{' '}
+            <span className="font-mono">{JSON.stringify(stored.data ?? null)}</span>
           </p>
 
           {toast && <p className="mt-2 text-xs text-green-600">{toast}</p>}

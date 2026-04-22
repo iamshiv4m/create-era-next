@@ -20,7 +20,10 @@ export interface IpcContract {
 
   // --- Relational DB (better-sqlite3 backend only) ---------------------------
   // Safe, schema-validated query surface. See docs/04-storage.md.
-  'db:run': { req: { sql: string; params?: unknown[] }; res: { changes: number; lastInsertRowid: number | bigint } }
+  'db:run': {
+    req: { sql: string; params?: unknown[] }
+    res: { changes: number; lastInsertRowid: number | bigint }
+  }
   'db:all': { req: { sql: string; params?: unknown[] }; res: unknown[] }
   'db:get': { req: { sql: string; params?: unknown[] }; res: unknown }
 
@@ -39,13 +42,7 @@ export type IpcResponse<K extends IpcChannel> = IpcContract[K]['res']
  */
 export interface IpcEventMap {
   'updater:status': {
-    state:
-      | 'checking'
-      | 'available'
-      | 'not-available'
-      | 'downloading'
-      | 'downloaded'
-      | 'error'
+    state: 'checking' | 'available' | 'not-available' | 'downloading' | 'downloaded' | 'error'
     version?: string
     progress?: { percent: number; bytesPerSecond: number; transferred: number; total: number }
     error?: string

@@ -8,7 +8,9 @@ export function PostsPage() {
   return (
     <section className="py-8">
       <h2 className="text-3xl font-semibold tracking-tight">{t('posts.heading')}</h2>
-      <p className="mt-2 max-w-prose text-neutral-600 dark:text-neutral-400">{t('posts.description')}</p>
+      <p className="mt-2 max-w-prose text-neutral-600 dark:text-neutral-400">
+        {t('posts.description')}
+      </p>
 
       <div className="mt-6">
         {isLoading && <p className="text-sm text-neutral-500">{t('posts.loading')}</p>}

@@ -30,7 +30,10 @@ Co-locate query hooks inside the feature folder:
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@renderer/lib/axios'
 
-export interface User { id: string; name: string }
+export interface User {
+  id: string
+  name: string
+}
 
 export function useUserQuery(id: string) {
   return useQuery<User>({
@@ -50,8 +53,7 @@ import { api } from '@renderer/lib/axios'
 export function useCreateUser() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (input: { name: string }) =>
-      (await api.post<User>('/users', input)).data,
+    mutationFn: async (input: { name: string }) => (await api.post<User>('/users', input)).data,
     onSuccess: () => qc.invalidateQueries({ queryKey: ['users'] }),
   })
 }
@@ -64,11 +66,11 @@ export function useCreateUser() {
 
 ## IPC vs HTTP
 
-| Use                                         | Pick                  |
-| ------------------------------------------- | --------------------- |
-| Calling a remote REST/GraphQL API           | Axios + React Query   |
-| Talking to the local main process           | `useIpcQuery` hook    |
-| Fire-and-forget notifications from main     | `window.api.on(...)`  |
+| Use                                     | Pick                 |
+| --------------------------------------- | -------------------- |
+| Calling a remote REST/GraphQL API       | Axios + React Query  |
+| Talking to the local main process       | `useIpcQuery` hook   |
+| Fire-and-forget notifications from main | `window.api.on(...)` |
 
 Both go through TanStack Query, so cache semantics are consistent — the only
 difference is the transport.

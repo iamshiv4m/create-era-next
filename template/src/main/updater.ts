@@ -21,9 +21,7 @@ export function initUpdater(window: BrowserWindow): void {
   mainWindow = window
 
   autoUpdater.on('checking-for-update', () => emit({ state: 'checking' }))
-  autoUpdater.on('update-available', (info) =>
-    emit({ state: 'available', version: info.version }),
-  )
+  autoUpdater.on('update-available', (info) => emit({ state: 'available', version: info.version }))
   autoUpdater.on('update-not-available', () => emit({ state: 'not-available' }))
   autoUpdater.on('download-progress', (progress) =>
     emit({
@@ -46,7 +44,9 @@ export function initUpdater(window: BrowserWindow): void {
   // Automatically check for updates 5s after boot in production builds.
   if (app.isPackaged) {
     setTimeout(() => {
-      void autoUpdater.checkForUpdates().catch((err) => log.error('[updater] initial check failed', err))
+      void autoUpdater
+        .checkForUpdates()
+        .catch((err) => log.error('[updater] initial check failed', err))
     }, 5_000)
   }
 }

@@ -57,7 +57,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     void ipcInvoke('store:set', { key: STORAGE_KEY, value: next })
   }, [])
 
-  return <ThemeContext.Provider value={{ theme, resolved, setTheme }}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider value={{ theme, resolved, setTheme }}>{children}</ThemeContext.Provider>
+  )
 }
 
 export function useTheme(): ThemeContextValue {

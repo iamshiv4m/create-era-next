@@ -28,14 +28,13 @@ Either extend an existing file in `src/main/ipc/` or create a new one:
 import type { IpcChannel, IpcRequest, IpcResponse } from '../../shared/ipc-contract.js'
 import { storage } from '../storage/index.js'
 
-type Handler<K extends IpcChannel> = (req: IpcRequest<K>) => IpcResponse<K> | Promise<IpcResponse<K>>
+type Handler<K extends IpcChannel> = (
+  req: IpcRequest<K>,
+) => IpcResponse<K> | Promise<IpcResponse<K>>
 
 export const noteHandlers: { [K in IpcChannel]?: Handler<K> } = {
   'notes:create': ({ title, body }) => {
-    const result = storage.run?.(
-      'INSERT INTO notes (title, body) VALUES (?, ?)',
-      [title, body],
-    )
+    const result = storage.run?.('INSERT INTO notes (title, body) VALUES (?, ?)', [title, body])
     return { id: Number(result?.lastInsertRowid ?? 0) }
   },
 }
