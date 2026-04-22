@@ -107,7 +107,7 @@ Options:
 This is a monorepo managed with npm workspaces.
 
 ```bash
-git clone https://github.com/your-org/create-era-next
+git clone https://github.com/iamshiv4m/create-era-next
 cd create-era-next
 npm install
 npm run build           # build the CLI

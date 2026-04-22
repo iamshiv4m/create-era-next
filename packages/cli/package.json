@@ -4,7 +4,7 @@
   "description": "Scaffold a modern Electron + React + Vite + TypeScript app — the next-generation replacement for electron-react-boilerplate (ERB). Ships typed IPC, auto-updates, electron-store or SQLite storage, Axios + React Query, Tailwind, i18n, tests, and a full release pipeline.",
   "type": "module",
   "bin": {
-    "create-era-next": "./dist/index.js"
+    "create-era-next": "dist/index.js"
   },
   "files": [
     "dist",
@@ -62,14 +62,14 @@
   "engines": {
     "node": ">=20.19.0"
   },
-  "homepage": "https://github.com/your-org/create-era-next#readme",
+  "homepage": "https://github.com/iamshiv4m/create-era-next#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/create-era-next.git",
+    "url": "git+https://github.com/iamshiv4m/create-era-next.git",
     "directory": "packages/cli"
   },
   "bugs": {
-    "url": "https://github.com/your-org/create-era-next/issues"
+    "url": "https://github.com/iamshiv4m/create-era-next/issues"
   },
   "author": "create-era-next contributors",
   "license": "MIT",
