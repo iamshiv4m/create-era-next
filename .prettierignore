@@ -1,0 +1,14 @@
+node_modules
+dist
+out
+release
+coverage
+packages/cli/dist
+# Synced copy of root `template/` — created by `packages/cli/scripts/sync-template.mjs`
+# before publish. Ignore to avoid formatting a generated mirror.
+packages/cli/template
+template/node_modules
+template/out
+template/release
+**/*.min.js
+**/locales/*.json

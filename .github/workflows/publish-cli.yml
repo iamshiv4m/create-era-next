@@ -1,0 +1,50 @@
+name: Publish CLI to npm
+
+on:
+  push:
+    tags:
+      - "cli-v*"
+  workflow_dispatch: {}
+
+# Required for npm provenance (OIDC signing).
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build CLI (syncs template into package)
+        run: npm -w create-era-next run build
+
+      - name: Smoke test (electron-store)
+        run: |
+          node packages/cli/dist/index.js /tmp/publish-smoke-store \
+            --yes --storage electron-store --no-install --no-git \
+            --github-owner test --github-repo publish-smoke
+          test -f /tmp/publish-smoke-store/package.json
+
+      - name: Smoke test (sqlite)
+        run: |
+          node packages/cli/dist/index.js /tmp/publish-smoke-sqlite \
+            --yes --storage sqlite --no-install --no-git \
+            --github-owner test --github-repo publish-smoke
+          test -f /tmp/publish-smoke-sqlite/src/main/storage/backend-sqlite.ts
+
+      - name: Publish with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/cli
+          npm publish --provenance --access public

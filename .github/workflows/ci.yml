@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cli:
+    name: Build + smoke test CLI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Build CLI
+        run: npm -w create-era-next run build
+
+      - name: Smoke test (electron-store)
+        run: |
+          node packages/cli/dist/index.js /tmp/smoke-store \
+            --yes --storage electron-store --no-install --no-git \
+            --github-owner test --github-repo smoke
+          test -f /tmp/smoke-store/package.json
+          test -f /tmp/smoke-store/electron.vite.config.ts
+          test -f /tmp/smoke-store/src/main/storage/backend-store.ts
+          test ! -e /tmp/smoke-store/src/main/storage/backend-sqlite.ts
+
+      - name: Smoke test (sqlite)
+        run: |
+          node packages/cli/dist/index.js /tmp/smoke-sqlite \
+            --yes --storage sqlite --no-install --no-git \
+            --github-owner test --github-repo smoke
+          test -f /tmp/smoke-sqlite/package.json
+          test -f /tmp/smoke-sqlite/src/main/storage/backend-sqlite.ts
+          test ! -e /tmp/smoke-sqlite/src/main/storage/backend-store.ts

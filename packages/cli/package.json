@@ -1,0 +1,80 @@
+{
+  "name": "create-era-next",
+  "version": "0.1.0",
+  "description": "Scaffold a modern Electron + React + Vite + TypeScript app — the next-generation replacement for electron-react-boilerplate (ERB). Ships typed IPC, auto-updates, electron-store or SQLite storage, Axios + React Query, Tailwind, i18n, tests, and a full release pipeline.",
+  "type": "module",
+  "bin": {
+    "create-era-next": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "template",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prebuild": "node scripts/sync-template.mjs",
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "presmoke": "rm -rf /tmp/create-era-next-smoke",
+    "smoke": "node dist/index.js /tmp/create-era-next-smoke --yes --storage electron-store --no-install --no-git",
+    "smoke:sqlite": "rm -rf /tmp/create-era-next-smoke-sqlite && node dist/index.js /tmp/create-era-next-smoke-sqlite --yes --storage sqlite --no-install --no-git",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.2.1",
+    "chalk": "^5.4.1",
+    "commander": "^13.0.0",
+    "fs-extra": "^11.2.0",
+    "ora": "^8.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.9.2"
+  },
+  "keywords": [
+    "electron",
+    "electron-vite",
+    "react",
+    "react-19",
+    "vite",
+    "vite-7",
+    "typescript",
+    "tailwindcss",
+    "boilerplate",
+    "template",
+    "scaffolder",
+    "cli",
+    "create-app",
+    "electron-updater",
+    "auto-update",
+    "electron-store",
+    "better-sqlite3",
+    "react-query",
+    "axios",
+    "react-router",
+    "i18next",
+    "erb",
+    "electron-react-boilerplate"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "homepage": "https://github.com/your-org/create-era-next#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/create-era-next.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/create-era-next/issues"
+  },
+  "author": "create-era-next contributors",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
