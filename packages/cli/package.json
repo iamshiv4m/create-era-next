@@ -1,6 +1,6 @@
 {
   "name": "create-era-next",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Scaffold a modern Electron + React + Vite + TypeScript app — the next-generation replacement for electron-react-boilerplate (ERB). Ships typed IPC, auto-updates, electron-store or SQLite storage, Axios + React Query, Tailwind, i18n, tests, and a full release pipeline.",
   "type": "module",
   "bin": {
