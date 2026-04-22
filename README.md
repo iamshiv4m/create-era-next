@@ -33,22 +33,22 @@ npm run dev
 
 `electron-react-boilerplate` (ERB) is fantastic but dated — Webpack, slow HMR, legacy config. `create-era-next` gives you:
 
-| Feature                        | `create-era-next`                       | ERB                          |
-| ------------------------------ | --------------------------------------- | ---------------------------- |
-| Bundler                        | **Vite 7** via `electron-vite`          | Webpack 5                    |
-| Dev server startup             | **< 1s**                                | 10-30s                       |
-| HMR                            | **Instant** (Vite)                      | Slow                         |
-| Language                       | TypeScript 5.9                          | TypeScript                   |
-| UI                             | **React 19** + Tailwind 4               | React + CSS                  |
-| Data fetching                  | **Axios + TanStack Query v5**           | — (DIY)                      |
-| Typed IPC                      | **Compile-time safe IPC contract**      | — (manual `ipcRenderer.*`)   |
-| Local storage                  | **electron-store OR better-sqlite3**    | — (DIY)                      |
-| Auto-update                    | **electron-updater + GitHub Releases**  | Partial                      |
-| Router                         | **React Router v7**                     | React Router                 |
-| i18n                           | **i18next (en + hi included)**          | —                            |
-| Testing                        | **Vitest + Playwright**                 | Jest                         |
-| Lint + format                  | **ESLint 9 flat + Prettier + Husky**    | ESLint + Prettier            |
-| CI / Release                   | **3-OS matrix, signed, GitHub Releases**| Partial                      |
+| Feature            | `create-era-next`                        | ERB                        |
+| ------------------ | ---------------------------------------- | -------------------------- |
+| Bundler            | **Vite 7** via `electron-vite`           | Webpack 5                  |
+| Dev server startup | **< 1s**                                 | 10-30s                     |
+| HMR                | **Instant** (Vite)                       | Slow                       |
+| Language           | TypeScript 5.9                           | TypeScript                 |
+| UI                 | **React 19** + Tailwind 4                | React + CSS                |
+| Data fetching      | **Axios + TanStack Query v5**            | — (DIY)                    |
+| Typed IPC          | **Compile-time safe IPC contract**       | — (manual `ipcRenderer.*`) |
+| Local storage      | **electron-store OR better-sqlite3**     | — (DIY)                    |
+| Auto-update        | **electron-updater + GitHub Releases**   | Partial                    |
+| Router             | **React Router v7**                      | React Router               |
+| i18n               | **i18next (en + hi included)**           | —                          |
+| Testing            | **Vitest + Playwright**                  | Jest                       |
+| Lint + format      | **ESLint 9 flat + Prettier + Husky**     | ESLint + Prettier          |
+| CI / Release       | **3-OS matrix, signed, GitHub Releases** | Partial                    |
 
 ---
 
