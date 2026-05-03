@@ -1,18 +1,18 @@
-import { app, BrowserWindow, shell } from 'electron'
-import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
-import log from 'electron-log/main'
-import { registerIpcHandlers } from './ipc/index.js'
-import { initUpdater } from './updater.js'
+import { app, BrowserWindow, shell } from "electron";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+import log from "electron-log/main";
+import { registerIpcHandlers } from "./ipc/index.js";
+import { initUpdater } from "./updater.js";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-log.initialize()
-log.transports.file.level = 'info'
-log.info(`Starting {{projectName}} v${app.getVersion()}`)
+log.initialize();
+log.transports.file.level = "info";
+log.info(`Starting {{projectName}} v${app.getVersion()}`);
 
-let mainWindow: BrowserWindow | null = null
+let mainWindow: BrowserWindow | null = null;
 
 function createWindow(): BrowserWindow {
   const win = new BrowserWindow({
@@ -22,57 +22,57 @@ function createWindow(): BrowserWindow {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    backgroundColor: '#0a0a0a',
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    backgroundColor: "#0a0a0a",
+    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
     webPreferences: {
       // electron-vite emits the preload as ESM (`.mjs`) because `package.json`
       // declares `"type": "module"`. Electron ≥28 supports ESM preload scripts
       // natively when the file extension is `.mjs`.
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(__dirname, "../preload/index.mjs"),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
     },
-  })
+  });
 
-  win.on('ready-to-show', () => win.show())
+  win.on("ready-to-show", () => win.show());
 
   win.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url)
-    return { action: 'deny' }
-  })
+    shell.openExternal(url);
+    return { action: "deny" };
+  });
 
-  const devUrl = process.env['ELECTRON_RENDERER_URL']
+  const devUrl = process.env["ELECTRON_RENDERER_URL"];
   if (!app.isPackaged && devUrl) {
-    win.loadURL(devUrl)
-    win.webContents.openDevTools({ mode: 'detach' })
+    win.loadURL(devUrl);
+    win.webContents.openDevTools({ mode: "detach" });
   } else {
-    win.loadFile(join(__dirname, '../renderer/index.html'))
+    win.loadFile(join(__dirname, "../renderer/index.html"));
   }
 
-  return win
+  return win;
 }
 
 app.whenReady().then(async () => {
-  registerIpcHandlers()
+  registerIpcHandlers();
 
-  mainWindow = createWindow()
+  mainWindow = createWindow();
 
-  initUpdater(mainWindow)
+  initUpdater(mainWindow);
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      mainWindow = createWindow()
+      mainWindow = createWindow();
     }
-  })
-})
+  });
+});
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
   }
-})
+});
 
-process.on('uncaughtException', (err) => {
-  log.error('Uncaught exception:', err)
-})
+process.on("uncaughtException", (err) => {
+  log.error("Uncaught exception:", err);
+});

@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient } from "@tanstack/react-query";
 
 /**
  * Shared TanStack Query client.
@@ -20,4 +20,4 @@ export const queryClient = new QueryClient({
       retry: 0,
     },
   },
-})
+});

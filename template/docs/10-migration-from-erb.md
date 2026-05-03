@@ -56,22 +56,22 @@ ERB has a partial `electron-updater` setup. This boilerplate adds:
 
 ## Lint / test / format
 
-| ERB                            | create-era-next                           |
-| ------------------------------ | ----------------------------------------- |
-| ESLint (`.eslintrc.*`, legacy) | ESLint 9 flat config (`eslint.config.js`) |
-| Jest                           | Vitest (Vite-native, 10x faster)          |
-| — (no e2e default)             | Playwright smoke test                     |
-| Prettier                       | Prettier (same)                           |
-| Husky                          | Husky 9 (same)                            |
+| ERB                            | create-era-next                                                            |
+| ------------------------------ | -------------------------------------------------------------------------- |
+| ESLint (`.eslintrc.*`, legacy) | **oxlint** (`.oxlintrc.json`) + React / Vitest plugins                     |
+| Jest                           | Vitest (Vite-native, 10x faster)                                           |
+| — (no e2e default)             | Playwright smoke test                                                      |
+| Prettier                       | **Your choice**: **oxfmt** or **Prettier** (oxlint for lint in both cases) |
+| Husky                          | Husky 9 (same)                                                             |
 
 ## Renderer libs
 
-| ERB                     | create-era-next                          |
-| ----------------------- | ---------------------------------------- |
-| Plain CSS / your choice | Tailwind CSS 4 (via `@tailwindcss/vite`) |
-| React Router (manual)   | React Router v7                          |
-| — (DIY)                 | i18next + `react-i18next`                |
-| — (DIY)                 | Axios + TanStack Query v5 + Devtools     |
+| ERB                     | create-era-next                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------- |
+| Plain CSS / your choice | Tailwind CSS 4 (via `@tailwindcss/vite`)                                                    |
+| React Router (manual)   | **Your choice**: React Router v7 _or_ TanStack Router (hash history for Electron `file://`) |
+| — (DIY)                 | i18next + `react-i18next`                                                                   |
+| — (DIY)                 | Axios + TanStack Query v5 + Devtools                                                        |
 
 ## Likely gotchas
 

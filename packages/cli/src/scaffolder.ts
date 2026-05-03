@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { spawn } from 'node:child_process'
 import chalk from 'chalk'
 import ora from 'ora'
@@ -7,7 +8,7 @@ import { resolveConfig } from './prompts.js'
 import { copyTemplate } from './utils/copy.js'
 import { applyTokens } from './utils/tokens.js'
 import { initGit } from './utils/git.js'
-import type { ResolvedConfig, ScaffoldOptions } from './types.js'
+import type { ResolvedConfig, RouterKind, ScaffoldOptions } from './types.js'
 
 export async function run(opts: ScaffoldOptions): Promise<void> {
   console.log()
@@ -27,13 +28,17 @@ export async function run(opts: ScaffoldOptions): Promise<void> {
   console.log()
   console.log(chalk.dim(`  Target:       ${cfg.targetDir}`))
   console.log(chalk.dim(`  Storage:      ${cfg.storage}`))
+  console.log(chalk.dim(`  Router:       ${cfg.router}`))
+  console.log(chalk.dim(`  Formatter:    ${cfg.formatter}`))
   console.log(chalk.dim(`  Package mgr:  ${cfg.packageManager}`))
   console.log(chalk.dim(`  GitHub:       ${cfg.githubOwner}/${cfg.githubRepo}`))
   console.log()
 
   await copyTemplateStep(cfg)
+  await selectRouterStep(cfg)
   await applyTokensStep(cfg)
   await selectStorageStep(cfg)
+  await selectFormatterStep(cfg)
   await customizePackageJson(cfg)
 
   if (cfg.git) await initGitStep(cfg)
@@ -50,6 +55,53 @@ async function copyTemplateStep(cfg: ResolvedConfig): Promise<void> {
   } catch (err) {
     spinner.fail('Failed to copy template')
     throw err
+  }
+}
+
+/**
+ * Copies the chosen renderer router implementation from
+ * `router-variants/<kind>/` and drops the unused package from `package.json`.
+ *
+ * Must run **before** `applyTokens` so `{{projectName}}` etc. get replaced in
+ * the copied files too.
+ */
+async function selectRouterStep(cfg: ResolvedConfig): Promise<void> {
+  const spinner = ora(`Wiring router: ${cfg.router}`).start()
+  try {
+    const variantDir = join(cfg.templateDir, 'router-variants', cfg.router)
+    if (!existsSync(variantDir)) {
+      throw new Error(`Router variant not found: ${variantDir}`)
+    }
+    const dst = cfg.targetDir
+    const files: [string, string][] = [
+      ['main.tsx', join(dst, 'src/renderer/src/main.tsx')],
+      ['router.tsx', join(dst, 'src/renderer/src/router.tsx')],
+      ['AppLayout.tsx', join(dst, 'src/renderer/src/components/AppLayout.tsx')],
+      ['Sidebar.tsx', join(dst, 'src/renderer/src/components/Sidebar.tsx')],
+      ['ErrorPage.tsx', join(dst, 'src/renderer/src/components/ErrorPage.tsx')],
+    ]
+    for (const [name, dest] of files) {
+      await fse.copy(join(variantDir, name), dest, { overwrite: true })
+    }
+
+    const pkgPath = `${dst}/package.json`
+    const pkg = (await fse.readJSON(pkgPath)) as { dependencies?: Record<string, string> }
+    pkg.dependencies ??= {}
+    trimRouterDeps(pkg.dependencies, cfg.router)
+    await fse.writeJSON(pkgPath, pkg, { spaces: 2 })
+
+    spinner.succeed(`Router wired (${cfg.router})`)
+  } catch (err) {
+    spinner.fail('Router wiring failed')
+    throw err
+  }
+}
+
+function trimRouterDeps(deps: Record<string, string>, keep: RouterKind): void {
+  if (keep === 'tanstack-router') {
+    delete deps['react-router-dom']
+  } else {
+    delete deps['@tanstack/react-router']
   }
 }
 
@@ -111,6 +163,68 @@ async function selectStorageStep(cfg: ResolvedConfig): Promise<void> {
   }
 }
 
+async function selectFormatterStep(cfg: ResolvedConfig): Promise<void> {
+  const spinner = ora(`Formatter: ${cfg.formatter}`).start()
+  try {
+    const dst = cfg.targetDir
+    const pkgPath = join(dst, 'package.json')
+    const pkg = (await fse.readJSON(pkgPath)) as {
+      devDependencies?: Record<string, string>
+      scripts?: Record<string, string>
+      'lint-staged'?: Record<string, string | string[]>
+    }
+    pkg.devDependencies ??= {}
+    pkg.scripts ??= {}
+
+    if (cfg.formatter === 'prettier') {
+      delete pkg.devDependencies['oxfmt']
+      pkg.devDependencies['prettier'] = '^3.4.2'
+      pkg.scripts['format'] = 'prettier --write .'
+      pkg.scripts['format:check'] = 'prettier --check .'
+      pkg['lint-staged'] = {
+        '*.{ts,tsx,js,jsx,mjs,cjs,css,md,json,yaml,yml}': ['prettier --write'],
+        '*.{ts,tsx}': ['oxlint --react-plugin --vitest-plugin -c .oxlintrc.json --fix'],
+      }
+      const variantDir = join(cfg.templateDir, 'formatter-variants', 'prettier')
+      if (!existsSync(variantDir)) {
+        throw new Error(`Formatter variant not found: ${variantDir}`)
+      }
+      await fse.copy(join(variantDir, '.prettierrc'), join(dst, '.prettierrc'), {
+        overwrite: true,
+      })
+      await fse.copy(join(variantDir, '.prettierignore'), join(dst, '.prettierignore'), {
+        overwrite: true,
+      })
+      const oxPath = join(dst, '.oxfmtrc.json')
+      if (existsSync(oxPath)) await fse.remove(oxPath)
+    } else {
+      delete pkg.devDependencies['prettier']
+      pkg.devDependencies['oxfmt'] = '^0.47.0'
+      pkg.scripts['format'] = 'oxfmt .'
+      pkg.scripts['format:check'] = 'oxfmt --check .'
+      pkg['lint-staged'] = {
+        '*.{ts,tsx,js,jsx,mjs,cjs,css}': ['oxfmt'],
+        '*.{ts,tsx}': ['oxlint --react-plugin --vitest-plugin -c .oxlintrc.json --fix'],
+      }
+      for (const f of ['.prettierrc', '.prettierignore'] as const) {
+        const p = join(dst, f)
+        if (existsSync(p)) await fse.remove(p)
+      }
+      const oxSrc = join(cfg.templateDir, '.oxfmtrc.json')
+      const oxDst = join(dst, '.oxfmtrc.json')
+      if (!existsSync(oxDst) && existsSync(oxSrc)) {
+        await fse.copy(oxSrc, oxDst, { overwrite: true })
+      }
+    }
+
+    await fse.writeJSON(pkgPath, pkg, { spaces: 2 })
+    spinner.succeed(`Formatter set (${cfg.formatter})`)
+  } catch (err) {
+    spinner.fail('Formatter wiring failed')
+    throw err
+  }
+}
+
 async function adjustDeps(
   cfg: ResolvedConfig,
   changes: {
@@ -141,8 +255,8 @@ async function adjustDeps(
 }
 
 async function customizePackageJson(cfg: ResolvedConfig): Promise<void> {
-  // No-op hook for future per-choice tweaks; currently all deltas handled in
-  // the storage step.
+  // No-op hook for future per-choice tweaks; storage + router + formatter are
+  // handled in their respective steps.
   void cfg
 }
 

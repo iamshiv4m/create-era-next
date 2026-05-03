@@ -1,0 +1,17 @@
+import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
+
+export function ErrorPage() {
+  const error = useRouteError()
+  const message = isRouteErrorResponse(error)
+    ? `${error.status} ${error.statusText}`
+    : error instanceof Error
+      ? error.message
+      : 'Unknown error'
+
+  return (
+    <div className="flex h-screen flex-col items-center justify-center gap-2 p-8 text-center">
+      <h1 className="text-2xl font-semibold">Something went wrong</h1>
+      <p className="text-sm text-neutral-500">{message}</p>
+    </div>
+  )
+}

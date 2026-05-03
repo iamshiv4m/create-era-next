@@ -30,21 +30,44 @@ jobs:
       - name: Build CLI
         run: npm -w create-era-next run build
 
-      - name: Smoke test (electron-store)
+      - name: Smoke test (electron-store, React Router)
         run: |
           node packages/cli/dist/index.js /tmp/smoke-store \
-            --yes --storage electron-store --no-install --no-git \
+            --yes --storage electron-store --router react-router-dom --formatter oxfmt --no-install --no-git \
             --github-owner test --github-repo smoke
           test -f /tmp/smoke-store/package.json
           test -f /tmp/smoke-store/electron.vite.config.ts
           test -f /tmp/smoke-store/src/main/storage/backend-store.ts
           test ! -e /tmp/smoke-store/src/main/storage/backend-sqlite.ts
+          ! grep -q '@tanstack/react-router' /tmp/smoke-store/package.json
+          grep -q 'react-router-dom' /tmp/smoke-store/package.json
+          grep -q 'oxfmt' /tmp/smoke-store/package.json
+          ! grep -q '"prettier"' /tmp/smoke-store/package.json
 
       - name: Smoke test (sqlite)
         run: |
           node packages/cli/dist/index.js /tmp/smoke-sqlite \
-            --yes --storage sqlite --no-install --no-git \
+            --yes --storage sqlite --router react-router-dom --formatter oxfmt --no-install --no-git \
             --github-owner test --github-repo smoke
           test -f /tmp/smoke-sqlite/package.json
           test -f /tmp/smoke-sqlite/src/main/storage/backend-sqlite.ts
           test ! -e /tmp/smoke-sqlite/src/main/storage/backend-store.ts
+
+      - name: Smoke test (TanStack Router)
+        run: |
+          node packages/cli/dist/index.js /tmp/smoke-tsr \
+            --yes --storage electron-store --router tanstack-router --formatter oxfmt --no-install --no-git \
+            --github-owner test --github-repo smoke
+          grep -q '@tanstack/react-router' /tmp/smoke-tsr/package.json
+          ! grep -q 'react-router-dom' /tmp/smoke-tsr/package.json
+          grep -q 'createRootRoute' /tmp/smoke-tsr/src/renderer/src/router.tsx
+
+      - name: Smoke test (Prettier formatter)
+        run: |
+          node packages/cli/dist/index.js /tmp/smoke-prettier \
+            --yes --storage electron-store --router react-router-dom --formatter prettier --no-install --no-git \
+            --github-owner test --github-repo smoke
+          grep -q '"prettier"' /tmp/smoke-prettier/package.json
+          ! grep -q 'oxfmt' /tmp/smoke-prettier/package.json
+          test -f /tmp/smoke-prettier/.prettierrc
+          test ! -e /tmp/smoke-prettier/.oxfmtrc.json

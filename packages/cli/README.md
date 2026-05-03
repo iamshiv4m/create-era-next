@@ -16,9 +16,9 @@ npx create-era-next my-app
 - **Storage** — choose at scaffold time: `electron-store` or `better-sqlite3`
 - **Axios + TanStack Query v5** with Devtools, interceptors, and example feature
 - **Auto-updates** via `electron-updater` + GitHub Releases (release workflow included)
-- **Tailwind CSS 4**, **React Router v7**, **i18next** (en + hi)
+- **Tailwind CSS 4**, **React Router v7 _or_ TanStack Router** (pick when you scaffold), **i18next** (en + hi)
 - **Vitest** unit tests + **Playwright** e2e smoke test
-- **ESLint 9 flat config** + **Prettier** + **Husky** + **lint-staged**
+- **oxlint** + **oxfmt _or_ Prettier** (pick when you scaffold) + **Husky** + **lint-staged**
 - **GitHub Actions**: CI + 3-OS release matrix (macOS / Windows / Linux)
 
 ## CLI
@@ -28,6 +28,8 @@ npx create-era-next <project-name> [options]
 
 Options:
   --storage <kind>       Storage backend: electron-store | sqlite
+  --router <kind>        Renderer router: react-router-dom | tanstack-router
+  --formatter <kind>     Code formatter: oxfmt | prettier
   --pm <name>            Package manager: npm | pnpm | yarn | bun
   --github-owner <owner> GitHub owner for auto-update publish config
   --github-repo <repo>   GitHub repo name

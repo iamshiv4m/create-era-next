@@ -1,7 +1,7 @@
-import { resolve } from 'node:path'
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { resolve } from "node:path";
+import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   main: {
@@ -9,14 +9,14 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: resolve(__dirname, 'src/main/index.ts'),
+          index: resolve(__dirname, "src/main/index.ts"),
         },
       },
     },
     resolve: {
       alias: {
-        '@main': resolve(__dirname, 'src/main'),
-        '@shared': resolve(__dirname, 'src/shared'),
+        "@main": resolve(__dirname, "src/main"),
+        "@shared": resolve(__dirname, "src/shared"),
       },
     },
   },
@@ -25,29 +25,29 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: resolve(__dirname, 'src/preload/index.ts'),
+          index: resolve(__dirname, "src/preload/index.ts"),
         },
       },
     },
     resolve: {
       alias: {
-        '@shared': resolve(__dirname, 'src/shared'),
+        "@shared": resolve(__dirname, "src/shared"),
       },
     },
   },
   renderer: {
-    root: resolve(__dirname, 'src/renderer'),
+    root: resolve(__dirname, "src/renderer"),
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@renderer': resolve(__dirname, 'src/renderer/src'),
-        '@shared': resolve(__dirname, 'src/shared'),
+        "@renderer": resolve(__dirname, "src/renderer/src"),
+        "@shared": resolve(__dirname, "src/shared"),
       },
     },
     build: {
       rollupOptions: {
         input: {
-          index: resolve(__dirname, 'src/renderer/index.html'),
+          index: resolve(__dirname, "src/renderer/index.html"),
         },
       },
     },
@@ -55,4 +55,4 @@ export default defineConfig({
       port: 5173,
     },
   },
-})
+});

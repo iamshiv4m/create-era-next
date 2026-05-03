@@ -3,7 +3,14 @@ import { existsSync, readdirSync } from 'node:fs'
 import { basename, resolve } from 'node:path'
 import { detectPackageManager } from './utils/package-manager.js'
 import { readGitConfig } from './utils/git.js'
-import type { PackageManager, ResolvedConfig, ScaffoldOptions, StorageKind } from './types.js'
+import type {
+  FormatterKind,
+  PackageManager,
+  ResolvedConfig,
+  ScaffoldOptions,
+  RouterKind,
+  StorageKind,
+} from './types.js'
 
 const projectNameRegex = /^[a-z0-9][a-z0-9-_]{0,213}$/i
 
@@ -86,6 +93,54 @@ export async function resolveConfig(opts: ScaffoldOptions): Promise<ResolvedConf
     throw new Error(`Invalid --storage: ${storage}. Use "electron-store" or "sqlite".`)
   }
 
+  // --- Router (renderer) ----------------------------------------------------
+  const router: RouterKind =
+    (opts.router as RouterKind | undefined) ??
+    (opts.yes
+      ? 'react-router-dom'
+      : await select({
+          message: 'Renderer router:',
+          default: 'react-router-dom' as RouterKind,
+          choices: [
+            {
+              name: 'react-router-dom — React Router v7 + createHashRouter (classic, great for Electron file:// )',
+              value: 'react-router-dom' as RouterKind,
+            },
+            {
+              name: 'tanstack-router — TanStack Router + hash history (typed route tree, Register)',
+              value: 'tanstack-router' as RouterKind,
+            },
+          ],
+        }))
+
+  if (router !== 'react-router-dom' && router !== 'tanstack-router') {
+    throw new Error(`Invalid --router: ${router}. Use "react-router-dom" or "tanstack-router".`)
+  }
+
+  // --- Formatter (Prettier vs oxfmt) ---------------------------------------
+  const formatter: FormatterKind =
+    (opts.formatter as FormatterKind | undefined) ??
+    (opts.yes
+      ? 'oxfmt'
+      : await select({
+          message: 'Code formatter:',
+          default: 'oxfmt' as FormatterKind,
+          choices: [
+            {
+              name: 'oxfmt — Oxc formatter (fast, pairs with oxlint)',
+              value: 'oxfmt' as FormatterKind,
+            },
+            {
+              name: 'prettier — Prettier (widest editor / team familiarity)',
+              value: 'prettier' as FormatterKind,
+            },
+          ],
+        }))
+
+  if (formatter !== 'oxfmt' && formatter !== 'prettier') {
+    throw new Error(`Invalid --formatter: ${formatter}. Use "oxfmt" or "prettier".`)
+  }
+
   // --- Package manager -----------------------------------------------------
   const pm: PackageManager = ((opts.packageManager as PackageManager) ??
     (opts.yes
@@ -122,6 +177,8 @@ export async function resolveConfig(opts: ScaffoldOptions): Promise<ResolvedConf
     projectName,
     targetDir,
     storage,
+    router,
+    formatter,
     packageManager: pm,
     githubOwner,
     githubRepo,

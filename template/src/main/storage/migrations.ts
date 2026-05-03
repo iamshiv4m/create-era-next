@@ -1,10 +1,10 @@
-import type { Database as BetterDatabase } from 'better-sqlite3'
-import log from 'electron-log/main'
+import type { Database as BetterDatabase } from "better-sqlite3";
+import log from "electron-log/main";
 
 interface Migration {
-  id: number
-  name: string
-  up: (db: BetterDatabase) => void
+  id: number;
+  name: string;
+  up: (db: BetterDatabase) => void;
 }
 
 /**
@@ -14,7 +14,7 @@ interface Migration {
 const migrations: Migration[] = [
   {
     id: 1,
-    name: 'init',
+    name: "init",
     up: (db) => {
       db.exec(`
         CREATE TABLE IF NOT EXISTS notes (
@@ -23,10 +23,10 @@ const migrations: Migration[] = [
           body TEXT NOT NULL DEFAULT '',
           created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         );
-      `)
+      `);
     },
   },
-]
+];
 
 export function runMigrations(db: BetterDatabase): void {
   db.exec(`
@@ -35,21 +35,21 @@ export function runMigrations(db: BetterDatabase): void {
       name TEXT NOT NULL,
       applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
-  `)
+  `);
 
   const applied = db
-    .prepare<[], { id: number }>('SELECT id FROM _migrations ORDER BY id')
+    .prepare<[], { id: number }>("SELECT id FROM _migrations ORDER BY id")
     .all()
-    .map((r) => r.id)
+    .map((r) => r.id);
 
-  const record = db.prepare<[number, string]>('INSERT INTO _migrations (id, name) VALUES (?, ?)')
+  const record = db.prepare<[number, string]>("INSERT INTO _migrations (id, name) VALUES (?, ?)");
 
   for (const m of migrations) {
-    if (applied.includes(m.id)) continue
-    log.info(`[sqlite] applying migration ${m.id}: ${m.name}`)
+    if (applied.includes(m.id)) continue;
+    log.info(`[sqlite] applying migration ${m.id}: ${m.name}`);
     db.transaction(() => {
-      m.up(db)
-      record.run(m.id, m.name)
-    })()
+      m.up(db);
+      record.run(m.id, m.name);
+    })();
   }
 }

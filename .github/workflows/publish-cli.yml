@@ -3,7 +3,7 @@ name: Publish CLI to npm
 on:
   push:
     tags:
-      - "cli-v*"
+      - 'cli-v*'
   workflow_dispatch: {}
 
 # Required for npm provenance (OIDC signing).
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
           cache: npm
 
       - run: npm ci
@@ -31,16 +31,31 @@ jobs:
       - name: Smoke test (electron-store)
         run: |
           node packages/cli/dist/index.js /tmp/publish-smoke-store \
-            --yes --storage electron-store --no-install --no-git \
+            --yes --storage electron-store --router react-router-dom --formatter oxfmt --no-install --no-git \
             --github-owner test --github-repo publish-smoke
           test -f /tmp/publish-smoke-store/package.json
 
       - name: Smoke test (sqlite)
         run: |
           node packages/cli/dist/index.js /tmp/publish-smoke-sqlite \
-            --yes --storage sqlite --no-install --no-git \
+            --yes --storage sqlite --router react-router-dom --formatter oxfmt --no-install --no-git \
             --github-owner test --github-repo publish-smoke
           test -f /tmp/publish-smoke-sqlite/src/main/storage/backend-sqlite.ts
+
+      - name: Smoke test (TanStack Router)
+        run: |
+          node packages/cli/dist/index.js /tmp/publish-smoke-tsr \
+            --yes --storage electron-store --router tanstack-router --formatter oxfmt --no-install --no-git \
+            --github-owner test --github-repo publish-smoke
+          grep -q 'createRootRoute' /tmp/publish-smoke-tsr/src/renderer/src/router.tsx
+
+      - name: Smoke test (Prettier formatter)
+        run: |
+          node packages/cli/dist/index.js /tmp/publish-smoke-prettier \
+            --yes --storage electron-store --router react-router-dom --formatter prettier --no-install --no-git \
+            --github-owner test --github-repo publish-smoke
+          test -f /tmp/publish-smoke-prettier/.prettierrc
+          grep -q '"prettier"' /tmp/publish-smoke-prettier/package.json
 
       - name: Publish with provenance
         env:

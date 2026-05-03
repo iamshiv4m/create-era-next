@@ -1,6 +1,6 @@
 {
   "name": "create-era-next",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Scaffold a modern Electron + React + Vite + TypeScript app — the next-generation replacement for electron-react-boilerplate (ERB). Ships typed IPC, auto-updates, electron-store or SQLite storage, Axios + React Query, Tailwind, i18n, tests, and a full release pipeline.",
   "type": "module",
   "bin": {
@@ -17,8 +17,9 @@
     "dev": "tsup --watch",
     "build": "tsup",
     "presmoke": "rm -rf /tmp/create-era-next-smoke",
-    "smoke": "node dist/index.js /tmp/create-era-next-smoke --yes --storage electron-store --no-install --no-git",
-    "smoke:sqlite": "rm -rf /tmp/create-era-next-smoke-sqlite && node dist/index.js /tmp/create-era-next-smoke-sqlite --yes --storage sqlite --no-install --no-git",
+    "smoke": "node dist/index.js /tmp/create-era-next-smoke --yes --storage electron-store --router react-router-dom --formatter oxfmt --no-install --no-git",
+    "smoke:sqlite": "rm -rf /tmp/create-era-next-smoke-sqlite && node dist/index.js /tmp/create-era-next-smoke-sqlite --yes --storage sqlite --router react-router-dom --formatter oxfmt --no-install --no-git",
+    "smoke:tanstack": "rm -rf /tmp/create-era-next-smoke-tsr && node dist/index.js /tmp/create-era-next-smoke-tsr --yes --storage electron-store --router tanstack-router --formatter oxfmt --no-install --no-git",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -55,6 +56,7 @@
     "react-query",
     "axios",
     "react-router",
+    "tanstack-router",
     "i18next",
     "erb",
     "electron-react-boilerplate"

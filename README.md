@@ -33,22 +33,22 @@ npm run dev
 
 `electron-react-boilerplate` (ERB) is fantastic but dated — Webpack, slow HMR, legacy config. `create-era-next` gives you:
 
-| Feature            | `create-era-next`                        | ERB                        |
-| ------------------ | ---------------------------------------- | -------------------------- |
-| Bundler            | **Vite 7** via `electron-vite`           | Webpack 5                  |
-| Dev server startup | **< 1s**                                 | 10-30s                     |
-| HMR                | **Instant** (Vite)                       | Slow                       |
-| Language           | TypeScript 5.9                           | TypeScript                 |
-| UI                 | **React 19** + Tailwind 4                | React + CSS                |
-| Data fetching      | **Axios + TanStack Query v5**            | — (DIY)                    |
-| Typed IPC          | **Compile-time safe IPC contract**       | — (manual `ipcRenderer.*`) |
-| Local storage      | **electron-store OR better-sqlite3**     | — (DIY)                    |
-| Auto-update        | **electron-updater + GitHub Releases**   | Partial                    |
-| Router             | **React Router v7**                      | React Router               |
-| i18n               | **i18next (en + hi included)**           | —                          |
-| Testing            | **Vitest + Playwright**                  | Jest                       |
-| Lint + format      | **ESLint 9 flat + Prettier + Husky**     | ESLint + Prettier          |
-| CI / Release       | **3-OS matrix, signed, GitHub Releases** | Partial                    |
+| Feature            | `create-era-next`                                                             | ERB                        |
+| ------------------ | ----------------------------------------------------------------------------- | -------------------------- |
+| Bundler            | **Vite 7** via `electron-vite`                                                | Webpack 5                  |
+| Dev server startup | **< 1s**                                                                      | 10-30s                     |
+| HMR                | **Instant** (Vite)                                                            | Slow                       |
+| Language           | TypeScript 5.9                                                                | TypeScript                 |
+| UI                 | **React 19** + Tailwind 4                                                     | React + CSS                |
+| Data fetching      | **Axios + TanStack Query v5**                                                 | — (DIY)                    |
+| Typed IPC          | **Compile-time safe IPC contract**                                            | — (manual `ipcRenderer.*`) |
+| Local storage      | **electron-store OR better-sqlite3**                                          | — (DIY)                    |
+| Auto-update        | **electron-updater + GitHub Releases**                                        | Partial                    |
+| Router             | **Your choice**: React Router v7 _or_ TanStack Router (hash / `file://` safe) | React Router               |
+| i18n               | **i18next (en + hi included)**                                                | —                          |
+| Testing            | **Vitest + Playwright**                                                       | Jest                       |
+| Lint + format      | **oxlint** + **oxfmt _or_ Prettier** + **Husky**                              | ESLint + Prettier          |
+| CI / Release       | **3-OS matrix, signed, GitHub Releases**                                      | Partial                    |
 
 ---
 
@@ -61,10 +61,11 @@ npm run dev
 - **Storage of your choice** at scaffold time: `electron-store` (simple JSON) or `better-sqlite3` (relational).
 - **Auto-updates** via `electron-updater` + GitHub Releases, with a working `useUpdater()` hook and toast UI.
 - **Axios + TanStack Query v5** pre-wired with interceptors, devtools, and a working example.
-- **React Router v7** + **i18next** (English + Hindi) + dark/light theme.
+- **Renderer router** — pick at scaffold time: **`react-router-dom`** (React Router v7 + `createHashRouter`) or **`@tanstack/react-router`** (typed route tree). The CLI removes the package you did not choose.
+- **Code formatter** — **`oxfmt`** or **`prettier`** (lint stays **oxlint** for both).
 - **Vitest** unit tests + **Playwright** e2e smoke test.
 - **GitHub Actions**: CI (lint + typecheck + test) + Release (build matrix for macOS / Windows / Linux).
-- **ESLint 9 flat config** + **Prettier 3** + **Husky 9** + **lint-staged**.
+- **oxlint** + **oxfmt or Prettier** (formatter of your choice) + **Husky 9** + **lint-staged**.
 
 ---
 
@@ -92,6 +93,8 @@ npx create-era-next <project-name> [options]
 
 Options:
   --storage <kind>    Storage backend: electron-store | sqlite
+  --router <kind>     Renderer router: react-router-dom | tanstack-router
+  --formatter <kind>  Code formatter: oxfmt | prettier
   --pm <name>         Package manager: npm | pnpm | yarn | bun
   --no-git            Skip git initialization
   --no-install        Skip dependency installation
@@ -112,6 +115,8 @@ cd create-era-next
 npm install
 npm run build           # build the CLI
 npm run smoke           # run CLI into /tmp to smoke-test
+# After editing template TypeScript/CSS, install template deps and run:
+# cd template && npm install && npm run format && npm run lint
 ```
 
 ---

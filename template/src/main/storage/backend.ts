@@ -7,4 +7,4 @@
  * The default below targets `electron-store` so this template stays runnable
  * out of the box if someone clones the repo without the CLI.
  */
-export { backend } from './backend-store.js'
+export { backend } from "./backend-store.js";

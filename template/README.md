@@ -18,7 +18,10 @@ npm run dev
 | `npm run dev`           | Start Vite dev server + Electron with HMR                    |
 | `npm run build`         | Bundle main / preload / renderer to `out/`                   |
 | `npm run typecheck`     | TypeScript check (no emit)                                   |
-| `npm run lint`          | ESLint over the whole project                                |
+| `npm run lint`          | **oxlint** (React + Vitest plugins)                          |
+| `npm run lint:fix`      | oxlint with `--fix`                                          |
+| `npm run format`        | **oxfmt** (write)                                            |
+| `npm run format:check`  | oxfmt check only (CI)                                        |
 | `npm test`              | Vitest unit tests                                            |
 | `npm run test:e2e`      | Playwright smoke test against the built app                  |
 | `npm run package`       | Package the app for the current OS (no publish)              |
@@ -26,6 +29,10 @@ npm run dev
 | `npm run package:win`   | Package for Windows                                          |
 | `npm run package:linux` | Package for Linux                                            |
 | `npm run release`       | Build + publish installers to GitHub Releases (CI uses this) |
+
+**Router:** Only one of `react-router-dom` or `@tanstack/react-router` is installed — the CLI removed the other when this app was generated. To use the other stack on a new project: `npx create-era-next my-app --router tanstack-router` or `--router react-router-dom`.
+
+**Formatter:** Either **oxfmt** or **prettier** is configured — the other was removed at scaffold time. Switching later: add the tool + config yourself, or scaffold a new app with `--formatter prettier` / `--formatter oxfmt`.
 
 ## Project structure
 

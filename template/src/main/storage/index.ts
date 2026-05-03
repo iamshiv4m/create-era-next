@@ -9,8 +9,8 @@
  * The currently-installed backend is re-exported as `storage`. If you switch,
  * update the import below and keep the `StorageBackend` interface in sync.
  */
-import { backend } from './backend.js'
-import type { StorageBackend } from './types.js'
+import { backend } from "./backend.js";
+import type { StorageBackend } from "./types.js";
 
-export const storage: StorageBackend = backend
-export type { StorageBackend } from './types.js'
+export const storage: StorageBackend = backend;
+export type { StorageBackend } from "./types.js";

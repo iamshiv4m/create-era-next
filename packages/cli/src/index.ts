@@ -4,7 +4,7 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 import { run } from './scaffolder.js'
-import type { StorageKind } from './types.js'
+import type { FormatterKind, RouterKind, StorageKind } from './types.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -18,6 +18,8 @@ async function main() {
     .version(pkg.version, '-v, --version')
     .argument('[project-directory]', 'Directory to create the project in')
     .option('--storage <kind>', 'Storage backend: electron-store | sqlite')
+    .option('--router <kind>', 'Renderer router: react-router-dom | tanstack-router')
+    .option('--formatter <kind>', 'Code formatter: oxfmt | prettier')
     .option('--pm <name>', 'Package manager: npm | pnpm | yarn | bun')
     .option('--github-owner <owner>', 'GitHub owner for auto-update config')
     .option('--github-repo <repo>', 'GitHub repo for auto-update config')
@@ -32,6 +34,8 @@ async function main() {
   const [projectDirectoryArg] = program.args
   const opts = program.opts<{
     storage?: string
+    router?: string
+    formatter?: string
     pm?: string
     githubOwner?: string
     githubRepo?: string
@@ -46,6 +50,8 @@ async function main() {
   await run({
     projectDirectoryArg,
     storage: opts.storage as StorageKind | undefined,
+    router: opts.router as RouterKind | undefined,
+    formatter: opts.formatter as FormatterKind | undefined,
     packageManager: opts.pm,
     githubOwner: opts.githubOwner,
     githubRepo: opts.githubRepo,

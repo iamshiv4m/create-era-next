@@ -21,12 +21,15 @@ export async function copyTemplate(
     overwrite: false,
     errorOnExist: false,
     filter: (src) => {
-      const rel = src.replace(source, '')
+      const rel = src.replace(source, '').replace(/\\/g, '/')
       // Never copy transient output from the maintainer's local dev.
       if (rel.includes('/node_modules')) return false
       if (rel.includes('/out')) return false
       if (rel.includes('/dist')) return false
       if (rel.includes('/release')) return false
+      // Applied programmatically in selectRouterStep (not part of the user's tree).
+      if (rel.includes('/router-variants/')) return false
+      if (rel.includes('/formatter-variants/')) return false
       if (rel.endsWith('.DS_Store')) return false
       return true
     },

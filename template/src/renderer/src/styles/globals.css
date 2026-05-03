@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --color-brand-50: #eff6ff;
@@ -17,12 +17,12 @@
   font-family:
     system-ui,
     -apple-system,
-    'Segoe UI',
+    "Segoe UI",
     Roboto,
-    'Helvetica Neue',
+    "Helvetica Neue",
     Arial,
     sans-serif;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 html,
@@ -39,7 +39,7 @@ html {
 
 input,
 textarea,
-[contenteditable='true'],
+[contenteditable="true"],
 .selectable {
   -webkit-user-select: text;
   user-select: text;

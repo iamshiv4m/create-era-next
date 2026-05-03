@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom'
-import { Sidebar } from './Sidebar'
-import { UpdateToast } from './UpdateToast'
+import { Outlet } from "react-router-dom";
+import { Sidebar } from "./Sidebar";
+import { UpdateToast } from "./UpdateToast";
 
 export function AppLayout() {
   return (
@@ -14,5 +14,5 @@ export function AppLayout() {
       </main>
       <UpdateToast />
     </div>
-  )
+  );
 }

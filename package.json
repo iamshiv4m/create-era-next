@@ -1,7 +1,7 @@
 {
   "name": "create-era-next-monorepo",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "Monorepo for create-era-next: the modern ERB replacement. Contains the CLI scaffolder and the project template.",
   "type": "module",
   "workspaces": [
@@ -12,8 +12,9 @@
     "dev:cli": "npm -w create-era-next run dev",
     "smoke": "npm -w create-era-next run smoke",
     "lint": "eslint packages/cli/src --max-warnings=0",
-    "format": "prettier --write \"packages/**/*.{ts,tsx,js,json,md}\" \"template/**/*.{ts,tsx,js,json,md}\"",
-    "format:check": "prettier --check \"packages/**/*.{ts,tsx,js,json,md}\"",
+    "format": "prettier --write \"packages/**/*.{ts,tsx,js,json,md}\" \"template/**/*.{json,md}\"",
+    "format:template:code": "npm --prefix template run format",
+    "format:check": "prettier --check \"packages/**/*.{ts,tsx,js,json,md}\" \"template/**/*.{json,md}\"",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -25,7 +26,10 @@
     "typescript": "^5.9.2"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,md}": [
+    "packages/**/*.{ts,tsx,js,jsx,json,md}": [
+      "prettier --write"
+    ],
+    "template/**/*.{json,md}": [
       "prettier --write"
     ]
   },

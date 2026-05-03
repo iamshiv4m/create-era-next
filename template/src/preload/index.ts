@@ -37,7 +37,7 @@ try {
   contextBridge.exposeInMainWorld('api', api)
 } catch (err) {
   // In tests (e.g. JSDOM) contextBridge may not be available; fall back safely.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(globalThis as any).api = api
+  const g = globalThis as typeof globalThis & { api?: Api }
+  g.api = api
   console.warn('[preload] contextBridge unavailable, using globalThis fallback', err)
 }
